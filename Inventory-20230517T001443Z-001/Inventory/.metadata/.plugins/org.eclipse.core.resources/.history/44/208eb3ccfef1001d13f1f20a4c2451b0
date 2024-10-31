@@ -1,0 +1,39 @@
+package IntentoryActivity;
+
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class Discount extends JFrame  {
+	
+	JRadioButton discount = new JRadioButton();
+	JRadioButton Senior = new JRadioButton();
+	JRadioButton RegularCustomer = new JRadioButton();
+	JRadioButton Employee = new JRadioButton();
+	ButtonGroup group = new ButtonGroup();
+	
+	
+Discount () {
+	//JFrame settings
+	this.setSize(400,250);
+	//this.setUndecorated(true);
+	this.setVisible(true);
+	this.setTitle("DISCOUNT");
+	this.setLocationRelativeTo(null);
+	this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+	this.setResizable(false);
+	this.setLayout(null);
+	this.add(discount);
+	this.add(Senior);
+	this.add(RegularCustomer);
+	this.add(Employee);
+	group.add(discount);
+	group.add(Senior);
+	group.add(RegularCustomer);
+	group.add(Employee);
+		}
+
+
+
+}

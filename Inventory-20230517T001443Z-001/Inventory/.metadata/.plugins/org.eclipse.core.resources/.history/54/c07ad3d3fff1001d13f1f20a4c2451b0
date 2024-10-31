@@ -1,0 +1,58 @@
+package IntentoryActivity;
+
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class Discount extends JFrame  {
+	
+	JRadioButton Student = new JRadioButton();
+	JRadioButton Senior = new JRadioButton();
+	JRadioButton RegularCustomer = new JRadioButton();
+	JRadioButton Employee = new JRadioButton();
+	ButtonGroup group = new ButtonGroup();
+	JLabel dc = new JLabel();
+	
+Discount () {
+	//JFrame settings
+	this.setSize(400,250);
+	//this.setUndecorated(true);
+	this.setVisible(true);
+	this.setTitle("DISCOUNT");
+	this.setLocationRelativeTo(null);
+	this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+	this.setResizable(false);
+	this.setLayout(null);
+	this.add(Student);
+	this.add(Senior);
+	this.add(RegularCustomer);
+	this.add(Employee);
+	this.add(dc);
+	group.add(Student);
+	group.add(Senior);
+	group.add(RegularCustomer);
+	group.add(Employee);
+	
+	
+	
+	dc.setBounds(25,10,200,50);
+	dc.setText("SELECT DISCOUNT");
+	dc.setFont(new Font("ARIAL", Font.BOLD, 20));
+	
+	
+	//Student
+	Student.setBounds(25,60,150,30);
+	Student.setText("Student 3%");
+	Student.setFont(new Font("ARIAL", Font.BOLD, 15));
+	
+	//SENIOR
+	Senior.setBounds(25,60,150,30);
+	Senior.setText("Senior/ PWD 20%");
+	Senior.setFont(new Font("ARIAL", Font.BOLD, 15));
+	
+		}
+
+
+
+}

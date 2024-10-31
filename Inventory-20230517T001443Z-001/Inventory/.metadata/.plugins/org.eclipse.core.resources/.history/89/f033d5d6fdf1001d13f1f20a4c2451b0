@@ -1,0 +1,22 @@
+package IntentoryActivity;
+
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+
+public class Discount extends JFrame  {
+	
+	
+Discount () {
+	//JFrame settings
+	this.setSize(300,200);
+	//this.setUndecorated(true);
+	this.setVisible(true);
+	this.setTitle("DISCOUNT");
+	this.setLocationRelativeTo(null);
+	this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+	this.setResizable(false);
+	this.setLayout(null);
+	
+		}
+}

@@ -1,0 +1,564 @@
+package IntentoryActivity;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+public class Inventory extends JFrame implements ActionListener {
+
+	
+	//this will create a new Panel with BorderLayout
+		JPanel tblPanel = new JPanel(new BorderLayout());
+			//this will create an array of JTextField with fixed size of 5
+		JTextField [] txtFields = new JTextField[7];
+		
+		
+		//this will create an array of JLabel with fixed size of 5
+		JLabel [] lblFields = new JLabel[7];
+		
+		String [] headertable = new String [] {"Item Code","Item Description", "Price","Size","Stocks",
+				"Re-Order Point","Remarks"
+		};
+		
+		//this string array will be the text of the Jlabel
+		String [] strLblFields = {"Item Code : ", "Item Description : ", "Price : ", "Size. : ", "Stocks : ","Re-order Point","REMARKS"};
+		
+		
+		//this will create a JButton
+		JButton StockInbtn = new JButton();
+		JButton Addbtn = new JButton();
+		JButton Editbtn = new JButton();
+		JButton Deletebtn = new JButton();
+		JButton Savebtn = new JButton();
+		JButton Cancelbtn = new JButton();
+		JButton Savebtn1 = new JButton();
+		DefaultTableModel tblModel = new DefaultTableModel(null, headertable);
+		
+		JTable tblProducts = new JTable(tblModel);
+		JScrollPane sptblProducts = new JScrollPane(tblProducts);
+		JPanel panelProducts = new JPanel(new BorderLayout());
+		Vector <String> r = new Vector();
+		int counter = 00001;
+		
+		Inventory(){
+			this.setTitle("Table");
+			this.setSize(850, 450);
+			this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+			this.setLocationRelativeTo(null);
+			this.setResizable(false);
+			
+			int y = 50;
+			//this loop will set the properties of JTextField , JLabel
+			for(int i = 0; i <= txtFields.length -1 ; i++) {
+				//properties of JTextField
+				txtFields[i] = new JTextField();
+				txtFields[i].setBounds(180, y, 150, 25);
+				this.add(txtFields[i]);
+				
+				//properties of JLabel
+				lblFields[i] = new JLabel();
+				lblFields[i].setText(strLblFields[i]);
+				lblFields[i].setBounds(50, y, 150, 25);
+				this.add(lblFields[i]);
+				y+=30;
+			}
+			lblFields[6].setBounds(50, 500, 150, 25);
+			txtFields[6].setBounds(180, 500, 150, 25);
+			txtFields[6].setText("");
+			txtFields[6].setEnabled(false);
+			
+			txtFields[0].setEnabled(false);
+			txtFields[0].setText("00001");
+			
+			for(int i = 1; i<=txtFields.length -1; i++) {
+				txtFields[i].setEditable(false);
+			}
+			
+			
+			//Stock Button Settings
+			
+			StockInbtn.setBounds(50, 250, 100, 30);
+			StockInbtn.setText("Stock in");
+			StockInbtn.setFocusable(false);
+			StockInbtn.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					int selectedRow = tblProducts.getSelectedRow();
+					String stocks = (txtFields[4].getText());
+					int StocksINT = Integer.parseInt(stocks);
+					
+					String ReOrderPoint = (txtFields[5].getText());
+					int ReOrderPointINT = Integer.parseInt(ReOrderPoint);
+					
+					if(StocksINT<ReOrderPointINT) {
+						txtFields[6].setText("Low Stocks");
+					}
+					else if(StocksINT>ReOrderPointINT) {
+						txtFields[6].setText("High Stocks");
+					}
+					else {
+						
+					}
+					for(int i = 0; i<=txtFields.length-1;i++) {
+					tblModel.getValueAt(selectedRow, i);
+					
+					
+	                    String value = (String) tblModel.getValueAt(selectedRow, i); // get the value of the first column of the selected row
+	                    txtFields[i].setText(value); // set the value in the text field
+	                   
+	                txtFields[1].setEditable(false);
+	                txtFields[2].setEditable(false);
+	                txtFields[3].setEditable(false);
+	                txtFields[4].setEditable(false);
+	                txtFields[5].setEditable(false);
+	                
+					}
+					
+					if(selectedRow == -1) {
+		                JOptionPane.showMessageDialog(null, "Please select a row to add stocks");
+		                return;
+		                
+		            } 
+					else {
+						
+					}
+					 
+					 if (selectedRow != -1) {
+				            // get the current value of the selected element
+				            String currentValue = tblModel.getValueAt(selectedRow, 4).toString();
+				            int txt4value = Integer.parseInt(currentValue);
+				            
+				            // display an input dialog with the current value
+				            
+				            String newValue = JOptionPane.showInputDialog(null, "Enter Stocks to add:", currentValue);
+				            int txt5value = Integer.parseInt(currentValue);
+				            // update the selected element with the new value
+				            int sum = Integer.parseInt(currentValue.toString()) + Integer.parseInt(newValue);
+
+				          
+				           
+				            tblModel.setValueAt(sum, selectedRow, 4);
+				            tblProducts.clearSelection();
+				            
+				        }
+					 else {
+						 
+					 }
+					
+					 
+	                    
+				 }
+				
+			});
+			
+			//Add button settings
+			Addbtn.setBounds(170, 250, 100, 30);
+			Addbtn.setText("Add");
+			Addbtn.setFocusable(false);
+			Addbtn.addActionListener(new ActionListener() { 
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					for(int i = 1; i<=txtFields.length -1; i++) {
+						txtFields[i].setEditable(true);
+						StockInbtn.setEnabled(false);
+						Addbtn.setEnabled(false);
+						Editbtn.setEnabled(false);
+						Deletebtn.setEnabled(false);
+						Savebtn.setEnabled(true);
+						Cancelbtn.setEnabled(true);
+						
+					}
+					
+				}
+				
+			
+			});
+			
+			Savebtn1.setEnabled(false);
+			Savebtn1.setBounds(170, 290, 100, 30);
+			Savebtn1.setText("Save");
+			this.add(Savebtn1);
+			Savebtn1.setVisible(false);
+			Savebtn1.setFocusable(false);
+			Savebtn1.addActionListener(this);
+			Savebtn1.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+
+					if (txtFields[1].getText().isEmpty()) {
+			              JOptionPane.showMessageDialog(null, "Please fill all the blanks");
+			              return;
+			         }
+					else if(txtFields[2].getText().isEmpty()) {
+						 JOptionPane.showMessageDialog(null, "Please fill all the blanks");
+			              return;
+					}
+					else if(txtFields[3].getText().isEmpty()) {
+						 JOptionPane.showMessageDialog(null, "Please fill all the blanks");
+			              return;
+					}
+					else if(txtFields[4].getText().isEmpty()) {
+						 JOptionPane.showMessageDialog(null, "Please fill all the blanks");
+			              return;
+					}
+					else if(txtFields[5].getText().isEmpty()) {
+						 JOptionPane.showMessageDialog(null, "Please fill all the blanks");
+			              return;
+					}
+					
+					
+					String stocks = (txtFields[4].getText());
+					int StocksINT = Integer.parseInt(stocks);
+					
+					String ReOrderPoint = (txtFields[5].getText());
+					int ReOrderPointINT = Integer.parseInt(ReOrderPoint);
+					int selectedRow = tblProducts.getSelectedRow();
+					if(StocksINT<ReOrderPointINT) {
+						txtFields[6].setText("Low Stocks");
+					}
+					else if(StocksINT>ReOrderPointINT) {
+						txtFields[6].setText("High Stocks");
+					}
+					else {
+						
+					}
+					 
+				         
+				     
+					// TODO Auto-generated method stub
+					int result = JOptionPane.showConfirmDialog(null,"Sure you want to edit??", "Swing Tester",
+				               JOptionPane.YES_NO_OPTION,
+				               JOptionPane.QUESTION_MESSAGE);
+					
+					 if(result == JOptionPane.YES_OPTION){
+					//Stocks convert to string
+					
+					
+					
+					String [] cvt = new String [7];
+					for (int i = 0; i <=cvt.length-1;i++) {
+						
+						cvt[i]=txtFields[i].getText().toString();
+						
+					
+					}
+					
+					for(int i =1; i<=txtFields.length-1; i++) {
+					txtFields[i].setEditable(false);
+					txtFields[i].setText("");
+					
+					
+					
+					}
+					counter++;
+					String formatted = String.format("%05d", counter);
+					
+					int y = Integer.parseInt(formatted);
+					txtFields[0].setText(formatted);
+					
+					tblModel.addRow(cvt);
+					tblModel.removeRow(selectedRow);
+					Savebtn1.setVisible(false);
+					Savebtn.setVisible(true);
+					Cancelbtn.setEnabled(false);
+					StockInbtn.setEnabled(true);
+					Addbtn.setEnabled(true);
+					Editbtn.setEnabled(true);
+					Deletebtn.setEnabled(true);
+					
+				}
+					 
+				}
+			});
+			//Edit button settings
+			Editbtn.setBounds(290, 250, 100, 30);
+			Editbtn.setText("Edit");
+			Editbtn.setFocusable(false);
+			Editbtn.addActionListener(this);
+			Editbtn.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					 int rowSelected = tblProducts.getSelectedRow();
+					 if(rowSelected == -1) {
+			                JOptionPane.showMessageDialog(null, "Please select a row to edit.");
+			                return;
+			            } 
+					
+					
+					int selectedRow = tblProducts.getSelectedRow();
+					txtFields[1].setEnabled(true);
+					txtFields[2].setEnabled(true);
+					txtFields[3].setEnabled(true);
+					txtFields[5].setEnabled(true);
+					txtFields[1].setEditable(true);
+					txtFields[2].setEditable(true);
+					txtFields[4].setEditable(false);
+					txtFields[3].setEditable(true);
+					txtFields[5].setEditable(true);
+					
+					for(int i = 0; i<=txtFields.length-1;i++) {
+					tblModel.getValueAt(selectedRow, i);
+					
+					
+	                    String value = (String) tblModel.getValueAt(selectedRow, i); // get the value of the first column of the selected row
+	                    txtFields[i].setText(value); // set the value in the text field
+	                   
+	                
+	                  
+					
+	                    	
+						
+					}
+				
+					counter--;
+					String formatted = String.format("%05d", counter);
+					
+					int y = Integer.parseInt(formatted);
+					txtFields[0].setText(formatted);
+						
+					StockInbtn.setEnabled(false);
+					Addbtn.setEnabled(false);
+					Editbtn.setEnabled(false);	
+					Deletebtn.setEnabled(false);
+					//Savebtn.setEnabled(true);
+					Savebtn1.setVisible(true);
+					Savebtn1.setEnabled(true);
+					Cancelbtn.setEnabled(true);
+					Savebtn.setVisible(false);
+					
+					}
+				
+				
+			});
+				
+			
+			
+			
+			//Delete button settings
+			Deletebtn.setBounds(50, 290, 100, 30);
+			Deletebtn.setText("Delete");
+			Deletebtn.setFocusable(false);
+			Deletebtn.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					 int selectedRow = tblProducts.getSelectedRow();
+					 if(selectedRow == -1) {
+			                JOptionPane.showMessageDialog(null, "Please select a row to delete.");
+			                return;
+			            } 
+					 
+					 if(e.getSource().equals(Deletebtn)) {
+					int result = JOptionPane.showConfirmDialog(null,"Sure? You want to Delete?", "Swing Tester",
+				               JOptionPane.YES_NO_OPTION,
+				               JOptionPane.WARNING_MESSAGE);
+				            if(result == JOptionPane.YES_OPTION){
+				            	tblModel.removeRow(tblProducts.getSelectedRow());
+				            }else if (result == JOptionPane.NO_OPTION){
+				               
+				            }else {
+				            	
+				            }
+				
+				           
+				            	
+				            
+					
+				}
+				
+				}
+			});
+			TableColumnModel tmtblProducts = tblProducts.getColumnModel();
+			tmtblProducts.getColumn(1).setPreferredWidth(135);
+			tmtblProducts.getColumn(0).setPreferredWidth(90);
+
+			
+
+			
+			
+			//Save button settings
+			Savebtn.setEnabled(false);
+			Savebtn.setBounds(170, 290, 100, 30);
+			Savebtn.setText("Save");
+			Savebtn.setFocusable(false);
+			Savebtn.addActionListener(this);
+			Savebtn.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					
+					if (txtFields[1].getText().isEmpty()) {
+			              JOptionPane.showMessageDialog(null, "Please fill all the blanks");
+			              return;
+			         }
+					else if(txtFields[2].getText().isEmpty()) {
+						 JOptionPane.showMessageDialog(null, "Please fill all the blanks");
+			              return;
+					}
+					else if(txtFields[3].getText().isEmpty()) {
+						 JOptionPane.showMessageDialog(null, "Please fill all the blanks");
+			              return;
+					}
+					else if(txtFields[4].getText().isEmpty()) {
+						 JOptionPane.showMessageDialog(null, "Please fill all the blanks");
+			              return;
+					}
+					else if(txtFields[5].getText().isEmpty()) {
+						 JOptionPane.showMessageDialog(null, "Please fill all the blanks");
+			              return;
+					}
+					
+					
+					String stocks = (txtFields[4].getText());
+					int StocksINT = Integer.parseInt(stocks);
+					
+					String ReOrderPoint = (txtFields[5].getText());
+					int ReOrderPointINT = Integer.parseInt(ReOrderPoint);
+					int selectedRow = tblProducts.getSelectedRow();
+					if(StocksINT<ReOrderPointINT) {
+						txtFields[6].setText("Low Stocks");
+					}
+					else if(StocksINT>ReOrderPointINT) {
+						txtFields[6].setText("High Stocks");
+					}
+					else {
+						
+					}
+					 
+				         
+				     
+					// TODO Auto-generated method stub
+					int result = JOptionPane.showConfirmDialog(null,"Sure you want to edit??", "Swing Tester",
+				               JOptionPane.YES_NO_OPTION,
+				               JOptionPane.QUESTION_MESSAGE);
+					
+					 if(result == JOptionPane.YES_OPTION){
+					//Stocks convert to string
+					
+					
+					
+					String [] cvt = new String [7];
+					for (int i = 0; i <=cvt.length-1;i++) {
+						
+						cvt[i]=txtFields[i].getText().toString();
+						
+						
+					}
+					
+					for(int i =1; i<=txtFields.length-1; i++) {
+					txtFields[i].setEditable(false);
+					txtFields[i].setText("");
+					
+					
+					
+					}
+					counter++;
+					String formatted = String.format("%05d", counter);
+					
+					int y = Integer.parseInt(formatted);
+					txtFields[0].setText(formatted);
+					
+					
+					
+					tblModel.addRow(cvt);
+				
+					
+					
+					
+					
+			
+				
+					
+				           
+				            	
+				            	
+				            	
+				            	//If the Save button is pressed, it sets into disable with Cancel Btn
+				            	Savebtn.setEnabled(false);
+				            	Cancelbtn.setEnabled(false);
+				            	StockInbtn.setEnabled(true);
+				            	Addbtn.setEnabled(true);
+				            	Editbtn.setEnabled(true);
+				            	Deletebtn.setEnabled(true);
+				            	JOptionPane.showMessageDialog(null, "Item Sucessfully save!");
+				            }else if (result == JOptionPane.NO_OPTION){
+				               
+				            }else {
+				            	
+				            }
+				           
+					
+				}
+				
+		
+			});
+			Cancelbtn.setEnabled(false);
+			//Cancel button settings
+			Cancelbtn.setBounds(290, 290, 100, 30);
+			Cancelbtn.setText("Cancel");
+			Cancelbtn.setFocusable(false);
+			Cancelbtn.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					int result = JOptionPane.showConfirmDialog(null,"Sure? You want to Cancel?", "Swing Tester",
+				               JOptionPane.YES_NO_OPTION,
+				               JOptionPane.QUESTION_MESSAGE);
+				            if(result == JOptionPane.YES_OPTION){
+				            
+				            	
+				            	
+				            	//If the Cancel button is pressed, it sets into disable with Save Btn
+				            	Savebtn1.setVisible(false);
+				            	Savebtn.setEnabled(false);
+				            	Cancelbtn.setEnabled(false);
+				            	StockInbtn.setEnabled(true);
+				            	Addbtn.setEnabled(true);
+				            	Editbtn.setEnabled(true);
+				            	Deletebtn.setEnabled(true);
+				            }else if (result == JOptionPane.NO_OPTION){
+				               
+				            }else {
+				            	
+				            }
+				}
+				
+				
+			});
+		
+			tblPanel.setBounds(390, 10, 440, 390);
+			tblPanel.setBackground(Color.white);
+			tblPanel.add(sptblProducts);
+			tblProducts.getTableHeader().setEnabled(false);
+			this.add(Cancelbtn);
+			this.add(Savebtn);
+			this.add(Deletebtn);
+			this.add(Editbtn);
+			this.add(Addbtn);
+			this.add(tblPanel);
+			this.add(StockInbtn);
+			this.setLayout(null);
+			this.setVisible(true);
+			
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+	}
+
